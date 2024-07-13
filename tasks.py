@@ -1,14 +1,19 @@
 from celery import Celery
 import smtplib
 from email.mime.text import MIMEText
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
 
 celery = Celery('tasks')
 celery.config_from_object('celeryconfig')
 
 @celery.task
 def send_email(to_email):
-    from_email = 'your-email@gmail.com'
-    password = 'your-email-password'
+    from_email = os.getenv('EMAIL_USER')      # Your email
+    password = os.getenv('EMAIL_PASSWORD')    # Your email password
 
     msg = MIMEText("This is a test email.")
     msg['Subject'] = 'Test Email'
